@@ -20,11 +20,11 @@ Alasan pemisahan logic karena Autentikasi, validasi, dan juga logika berada pada
 2. Untuk penyimpanan token JWT, HttpOnly Cookie lebih baik dibanding local storage untuk web karena token tidak terbaca secara langsung oleh js. Jika di local, token bisa diakses oleh js yang bisa dicuri apabila web terkena serangan. Cookie juga bisa mengubah atribut secure dan samesite untuk peningkatan keamanan.
 
 3. Jika dua user bersamaan mengurangi stok barang yang tinggal 1, untuk menecegah agat tidak negatif, saya memakai atomic update dengan pemeriksaan stok dan pengurangan dilakukan dalam satu operasi: 
-
+```js
 const result = await prisma.item.updateMany({
   where: { id, stock: { gte: qty } },
   data: { stock: { decrement: qty } },
 });
 if (result.count === 0) return res.status(409).json({ message: "Stok tidak mencukupi" });
-
+```
 Perintah ini dijalankan database sebagai satu statement SQL, jadi pengecekan stok dan pengurangannya terjadi sekaligus. Waktu dua request masuk bersama, PostgreSQL mengunci baris barang itu, jadi request kedua menunggu yang pertama selesai dulu. Saat request kedua, stoknya sudah 0 dan syarat `stock >= qty` tidak terpenuhi, jadi dia ditolak dengan status 409 dan datanya tidak berubah.
