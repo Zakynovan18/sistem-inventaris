@@ -71,7 +71,13 @@ REST API sederhana untuk sistem manajemen inventaris barang.
    Server berjalan di `http://localhost:3000`. Untuk memastikan server hidup, akses `GET http://localhost:3000/health`.
 
 ### Dokumentasi API (Postman)
-Import file `docs/NAMA-FILE.postman_collection.json` ke Postman (*Import* → pilih file). Setelah login, isi token di tab *Authorization* pada collection (tipe *Bearer Token*).
+Import file `docs/NAMA-inventory API.postman_collection.json` ke Postman (*Import* → pilih file). Setelah login, isi token di tab *Authorization* pada collection (tipe *Bearer Token*).
+Cara Menguji di postman:
+1. Pastikan server berjalan (`npm run dev`).
+2. Import `docs/inventory-api.postman_collection.json` ke Postman.
+3. Jalankan request berurutan dari atas ke bawah (atau klik *Run collection*): Health, Register, Login, Create Item, dst. Token dan id barang tersimpan otomatis, tidak perlu disalin manual.
+4. Jika Register menghasilkan 409, akun contoh sudah ada, dan langsung lanjut ke Login.
+5. Jalankan Delete Item paling akhir karena menghapus barang yang dibuat.
 
 ## Dokumentasi Endpoint
 
@@ -92,13 +98,13 @@ Endpoint bertanda "Ya" wajib menyertakan header `Authorization: Bearer <token>`.
 ### POST /auth/register
 Request body:
 ```json
-{ "name": "Zaky", "email": "zaky@gmail.com", "password": "zaky123" }
+{ "name": "Zaky Novananda", "email": "zakynovan@gmail.com", "password": "nanda1811" }
 ```
 Response `201`:
 ```json
 {
   "message": "Registrasi berhasil",
-  "data": { "id": 1, "name": "Zaky", "email": "zaky@gmail.com", "createdAt": "2026-11-05T08:00:00.000Z" }
+  "data": { "id": 6 , "name": "Zaky Novananda", "email": "zakynovan@gmail.com", "createdAt": "2026-11-05T08:00:00.000Z" }
 }
 ```
 Aturan: nama 2-100 karakter, email valid, password 8-72 karakter. Email yang sudah terdaftar menghasilkan `409`.
@@ -106,7 +112,7 @@ Aturan: nama 2-100 karakter, email valid, password 8-72 karakter. Email yang sud
 ### POST /auth/login
 Request body:
 ```json
-{ "email": "zaky@gmail.com", "password": "rahasia123" }
+{ "email": "zakynovan@gmail.com", "password": "nanda1811" }
 ```
 Response `200`:
 ```json
@@ -114,7 +120,7 @@ Response `200`:
   "message": "Login berhasil",
   "data": {
     "token": "eyJhbGciOiJIUzI1NiIs...",
-    "user": { "id": 1, "name": "Zaky", "email": "zaky@gmail.com" }
+    "user": { "id": 6, "name": "Zaky Novananda", "email": "zakynovan@gmail.com" }
   }
 }
 ```
@@ -130,10 +136,10 @@ Response `201`:
 {
   "message": "Barang berhasil ditambahkan",
   "data": {
-    "id": 1, "name": "Kabel USB", "description": "1 meter",
+    "id": 6, "name": "Kabel USB", "description": "1 meter",
     "stock": 25, "price": "15000",
-    "createdAt": "2026-11-05T08:10:00.000Z", "updatedAt": "2026-11-05T08:10:00.000Z",
-    "userId": 1
+    "createdAt": "2026-11-07T09:18:49.068Z", "updatedAt": "2026-11-07T09:18:49.068Z",
+    "userId": 6
   }
 }
 ```
@@ -153,7 +159,7 @@ Contoh: `GET /items?search=kabel&page=1&limit=5`
 Response `200`:
 ```json
 {
-  "data": [ { "id": 1, "name": "Kabel USB", "stock": 25, "price": "15000" } ],
+  "data": [ { "id": 6, "name": "Kabel USB", "stock": 25, "price": "15000" } ],
   "meta": { "page": 1, "limit": 5, "totalItems": 1, "totalPages": 1 }
 }
 ```
