@@ -1,6 +1,6 @@
 # Inventory Management API
 
-REST API sederhana untuk sistem manajemen inventaris barang. Fitur: registrasi dan login dengan JWT, CRUD barang (khusus user yang sudah login), pencarian dan pagination, serta validasi data.
+REST API sederhana untuk sistem manajemen inventaris barang. 
 
 ## Teknologi
 
